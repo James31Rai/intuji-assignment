@@ -3,7 +3,10 @@
 use Core\DotEnv;
 use Core\Session;
 
+// custom autoload
 include 'autoload.php';
+// composer autoload
+include 'vendor/autoload.php';
 
 $__DotEnv = new DotEnv(realpath(__DIR__."\.env"));
 

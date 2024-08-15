@@ -417,28 +417,29 @@ class Client
             : $this->config['approval_prompt'];
 
         // include_granted_scopes should be string "true", string "false", or null
-        $includeGrantedScopes = $this->config['include_granted_scopes'] === null
+        $include_granted_scopes = isset($this->config['include_granted_scopes']) ?: null;
+        $includeGrantedScopes = $include_granted_scopes === null
             ? null
-            : var_export($this->config['include_granted_scopes'], true);
+            : var_export($include_granted_scopes, true);
 
         $params = array_filter([
             'access_type' => $this->config['access_type'],
             'approval_prompt' => $approvalPrompt,
-            'hd' => $this->config['hd'],
+            'hd' => isset($this->config['hd']) ?: null,
             'include_granted_scopes' => $includeGrantedScopes,
-            'login_hint' => $this->config['login_hint'],
-            'openid.realm' => $this->config['openid.realm'],
+            'login_hint' => isset($this->config['login_hint']) ?: null,
+            'openid.realm' => isset($this->config['openid.realm']) ?: null,
             'prompt' => $this->config['prompt'],
             'redirect_uri' => $this->config['redirect_uri'],
             'response_type' => 'code',
             'scope' => $scope,
-            'state' => $this->config['state'],
+            'state' => isset($this->config['state']) ?: null,
         ]) + $queryParams;
 
         // If the list of scopes contains plus.login, add request_visible_actions
         // to auth URL.
-        $rva = $this->config['request_visible_actions'];
-        if (strlen($rva) > 0 && false !== strpos($scope, 'plus.login')) {
+        $rva = isset($this->config['request_visible_actions']) ?: null;
+        if (strlen($rva ?? '') > 0 && false !== strpos($scope, 'plus.login')) {
             $params['request_visible_actions'] = $rva;
         }
 
@@ -1122,8 +1123,8 @@ class Client
             'tokenCredentialUri' => self::OAUTH2_TOKEN_URI,
             'redirectUri'       => $this->getRedirectUri(),
             'issuer'            => $this->config['client_id'],
-            'signingKey'        => $this->config['signing_key'],
-            'signingAlgorithm'  => $this->config['signing_algorithm'],
+            'signingKey'        => isset($this->config['signing_key'])?:null,
+            'signingAlgorithm'  => isset($this->config['signing_algorithm'])?:'RS256',
         ]);
 
         return $auth;
@@ -1254,7 +1255,7 @@ class Client
         } elseif (6 === $guzzleVersion || 7 === $guzzleVersion) {
             // guzzle 6 or 7
             $options = [
-                'base_uri' => $this->config['base_path'],
+                'base_uri' => isset($this->config['base_path'])?:'',
                 'http_errors' => false,
             ];
         } else {

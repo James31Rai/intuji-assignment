@@ -127,20 +127,21 @@ class GoogleClient extends Google_Client
     private function getClient()
     {
         $this->setClient();
+        echo 
         
         $this->setToken();
     }
 
-    protected function checkAuthorizationFile()
+    public function checkAuthorizationFile()
     {
         if (file_exists($this->tokenPath)) {
             $google_token_json = file_get_contents($this->tokenPath);
-            $google_auth_url = $this->createAuthUrl();
-            if ((!empty($google_token_json) || ($google_token_json != 'null'))) {
+            if ((empty($google_token_json) || ($google_token_json != 'null'))) {
                 return json_decode($google_token_json, TRUE);
             } else {
+                $google_auth_url = $this->createAuthUrl();
                 redirect($google_auth_url);
-            }
+            }echo "HERE11";exit;
         }
         return false;
     }

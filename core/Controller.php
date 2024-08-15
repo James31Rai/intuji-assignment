@@ -27,8 +27,18 @@ class Controller
         }
     }
 
+    /**
+     * Render a view file
+     * 
+     * @param mixed $view
+     * @return void
+     */
     protected function render(mixed $view) : void
     {
+        if ($view != 'home') {
+            $this->checkAuthorization();
+        }
+        
         extract($this->sessionData);
         extract($this->renderData);
 
@@ -39,10 +49,33 @@ class Controller
         include('app/Views/layouts/footer.php');
     }
 
+    /**
+     * set render data
+     * 
+     * @param string $title
+     * @param string $page
+     * @param array $data
+     * @return void
+     */
     protected function setRenderData(string $title = '', string $page = '', Array $data = [])
     {
         $data['title'] = $title;
         $data['page'] = $page;
         $this->renderData = $data;
     }
+
+    /**
+     * check for authorization for access token
+     * 
+     * @return bool
+     */
+    public function checkAuthorization()
+    {
+        if ($this->session->has('google_access_token') && !empty($this->session->get('google_access_token'))) { 
+            return true;
+        } else {
+            redirect(base_url());
+        }
+    }
+
 }

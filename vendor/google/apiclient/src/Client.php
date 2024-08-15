@@ -1362,6 +1362,6 @@ class Client
 
     public function getUniverseDomain()
     {
-        return isset($this->config['universe_domain'])?:'';
+        return isset($this->config['universe_domain'])?:GetUniverseDomainInterface::DEFAULT_UNIVERSE_DOMAIN;
     }
 }

@@ -37,3 +37,14 @@ if (!function_exists('redirect')) {
     }
 }
 
+/**
+ * readable format of date for Google Event DateTime
+ * 
+ * @param mixed $dateTimeStr
+ * @return string
+ */
+function formatDateTime($dateTimeStr) {
+    $dateTime = new DateTime($dateTimeStr);
+    return $dateTime->format('l, F j, Y \a\t g:i A'); // e.g., Monday, August 15, 2024 at 9:00 AM
+}
+

@@ -26,6 +26,19 @@
         <div class="row">
             <?php
             if ($session->has('google_access_token')) {
+                if ($page == 'list') {
+                    ?>
+                    <div class="col-md-6 pb-4">
+                        <a href="<?= base_url() . 'event'; ?>" class="btn btn-primary">Create Event</a>
+                    </div>
+                <?php
+                } else if ($page == 'index') {
+                    ?>
+                    <div class="col-md-6 pb-4">
+                        <a href="<?= base_url() . 'event/list'; ?>" class="btn btn-primary">List Events</a>
+                    </div>
+                <?php
+                }
                 ?>
                 <div class="col-md-6 pb-4">
                     <form id="disconnectForm" action="<?= base_url() . 'disconnect'; ?>" method="post" class="pull-right">

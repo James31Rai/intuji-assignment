@@ -11,6 +11,7 @@ class CalendarEventController extends Controller
 {
     private $client;
     private $service;
+    private $eventService;
 
     public function __construct()
     {
@@ -18,8 +19,14 @@ class CalendarEventController extends Controller
 
         $this->client = new GoogleClient();
         $this->service = new \Google_Service_Calendar($this->client);
+        $this->eventService = new EventService();
     }
 
+    /**
+     * New event form for Google Calendar, acting as default page for Event
+     * 
+     * @return void
+     */
     public function index()
     {
         $postData = [];
@@ -46,10 +53,9 @@ class CalendarEventController extends Controller
             ['time_from', 'Time From', ['required']],
             ['time_to', 'Time To', ['required']],
         ];
-        $eventService = new EventService();
         if ($validateRequest =$validation->validate($validateRules)) {
-            $event =  $eventService->setEvent($validateRequest);
-            $eventService->saveEvent($event);
+            $event =  $this->eventService->setEvent($validateRequest);
+            $this->eventService->saveEvent($event);
         } else {
             if ($errors = $validation->getErrors()) {
                 $errors = implode('<br/>', $errors);
@@ -60,6 +66,34 @@ class CalendarEventController extends Controller
                 $this->session->set('status_response', $status_response);
             }
         }
+    }
+    
+
+    /**
+     * listing out events for Google Calendar
+     * 
+     * @return void
+     */
+    public function listEvent()
+    {
+        $results = $this->eventService->showEvent();
+
+        $this->setRenderData('Upcoming events', 'list', ['results' => $results->getItems()]);
+        $this->render('event/list');
+    }
+
+    /**
+     * deleting an event for Google Calendar
+     * 
+     * @return never
+     */
+    public function deleteEvent()
+    {
+        if ($this->eventService->removeEvent()) {
+            $status_response = ['status' => true, 'status_msg' => 'Event deleted successfully.'];
+            redirect(base_url() . 'event/list', ['status' => true, 'status_response' => $status_response]);
+        }
+        redirect(base_url());
     }
     
     /**
@@ -80,6 +114,6 @@ class CalendarEventController extends Controller
      */
     public function googleAuthorize()
     {
-        EventService::googleAutorization();
+        $this->eventService->googleAutorization();
     }
 }

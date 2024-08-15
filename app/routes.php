@@ -16,4 +16,8 @@ $router->addRoute('/google_authorize', CalendarEventController::class, 'googleAu
 $router->addRoute('/event', CalendarEventController::class, 'index');
 $router->addRoute('/event/add', CalendarEventController::class, 'addEvent');
 
+$router->addRoute('/event/list', CalendarEventController::class, 'listEvent');
+
+$router->addRoute('/event/delete', CalendarEventController::class, 'deleteEvent');
+
 $router->addRoute('/disconnect', CalendarEventController::class, 'disconnectGoogle');

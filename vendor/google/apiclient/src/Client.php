@@ -531,7 +531,7 @@ class Client
      */
     public function isUsingApplicationDefaultCredentials()
     {
-        return $this->config['use_application_default_credentials'];
+        return isset($this->config['use_application_default_credentials'])?:false;
     }
 
     /**
@@ -954,7 +954,8 @@ class Client
                 )
             );
 
-        if ($this->config['api_format_v2']) {
+        $api_format_v2_config = isset($this->config['api_format_v2']) ?: false;
+        if ($api_format_v2_config) {
             $request = $request->withHeader(
                 'X-GOOG-API-FORMAT-VERSION',
                 '2'
@@ -969,8 +970,8 @@ class Client
             $http,
             $request,
             $expectedClass,
-            $this->config['retry'],
-            $this->config['retry_map']
+            isset($this->config['retry'])?: [],
+            isset($this->config['retry_map'])?: null
         );
     }
 
@@ -1330,7 +1331,7 @@ class Client
         // @see https://github.com/google/google-api-php-client/issues/821
         return AuthHandlerFactory::build(
             $this->getCache(),
-            $this->config['cache_config']
+            isset($this->config['cache_config'])?:[],
         );
     }
 
@@ -1361,6 +1362,6 @@ class Client
 
     public function getUniverseDomain()
     {
-        return $this->config['universe_domain'];
+        return isset($this->config['universe_domain'])?:'';
     }
 }

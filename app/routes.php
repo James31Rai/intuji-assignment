@@ -14,3 +14,6 @@ $router->addRoute('/', HomeController::class, 'index');
 $router->addRoute('/google_authorize', CalendarEventController::class, 'googleAuthorize');
 
 $router->addRoute('/event', CalendarEventController::class, 'index');
+$router->addRoute('/event/add', CalendarEventController::class, 'addEvent');
+
+$router->addRoute('/disconnect', CalendarEventController::class, 'disconnectGoogle');

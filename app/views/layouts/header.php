@@ -20,7 +20,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php } ?>
-        <div class="py-5 text-center">
+        <div class="py-1 text-center">
             <h2><?=$title;?></h2>
         </div>
         <div class="row">
+            <?php
+            if ($session->has('google_access_token')) {
+                ?>
+                <div class="col-md-6 pb-4">
+                    <form id="disconnectForm" action="<?= base_url() . 'disconnect'; ?>" method="post" class="pull-right">
+                        <input type="hidden" name="disconnect" value="1">
+                        <input type="submit" class="btn btn-danger" value="Disconnect">
+                    </form>
+                </div>
+            <?php
+            }
+            ?>
+        </div>

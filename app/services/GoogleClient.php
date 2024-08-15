@@ -141,7 +141,7 @@ class GoogleClient extends Google_Client
             } else {
                 $google_auth_url = $this->createAuthUrl();
                 redirect($google_auth_url);
-            }echo "HERE11";exit;
+            }
         }
         return false;
     }
